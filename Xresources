@@ -38,7 +38,7 @@
 
 ! Custom
 URxvt.transparent:true
-URxvt.shading:10
+URxvt.shading:5
 
 URxvt.font: xft:Inconsolata\ for\ Powerline:pixelsize=11
 
