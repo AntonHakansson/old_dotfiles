@@ -1,0 +1,40 @@
+[
+  {
+    "defaults": {
+      "link": {
+        "relink": true,
+	"create": true,
+	"force": true
+      }
+    }
+  },
+  {
+    "clean": ["~", "~/.config"]
+  },
+  {
+    "link": {
+      "~/.zshrc": null,
+      "~/.Xresources": null,
+      "~/.config/i3/config": {
+      	"path": "i3/config"
+      },
+      "~/.i3blocks.conf": {
+        "path": "i3/i3blocks.conf"
+      },
+      "~/.wallpaper.jpg": null,
+      "~/.config/polybar/config": {
+        "path": "polybar/config"
+      },
+      "~/.config/rofi/config": {
+      	"path": "rofi/config"
+      },
+      "~/.lock.sh": null,
+      "~/.pad.png": null
+    }
+  },
+  {
+    "shell": [
+      ["git submodule update --init --recursive", "Installing submodules"]
+    ]
+  }
+]
