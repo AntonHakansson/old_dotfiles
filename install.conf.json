@@ -22,9 +22,6 @@
         "path": "i3/i3blocks.conf"
       },
       "~/.wallpaper.jpg": null,
-      "~/.config/polybar/config": {
-        "path": "polybar/config"
-      },
       "~/.config/rofi/config": {
       	"path": "rofi/config"
       },
@@ -34,6 +31,7 @@
       "~.fonts/fontawesome-webfront.ttf": {
         "path": "fontawesome-webfont.ttf"
       },
+      "~/.compton.conf": null,
 
       "~/.lock.sh": null,
       "~/.pad.png": null
