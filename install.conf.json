@@ -28,6 +28,10 @@
       "~/.config/rofi/config": {
       	"path": "rofi/config"
       },
+      "~/.vimrc": {
+      	"path": "dotvim/vimrc"
+      },
+
       "~/.lock.sh": null,
       "~/.pad.png": null
     }
