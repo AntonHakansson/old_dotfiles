@@ -207,3 +207,6 @@ bar {
 #Auto start
 exec_always --no-startup-id feh --bg-scale ~/.wallpaper.jpg
 exec_always --no-startup-id xrdb ~/.Xresources
+
+exec_always compton -f
+
