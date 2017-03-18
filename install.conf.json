@@ -31,6 +31,9 @@
       "~/.vimrc": {
       	"path": "dotvim/vimrc"
       },
+      "~.fonts/fontawesome-webfront.ttf": {
+        "path": "fontawesome-webfont.ttf"
+      },
 
       "~/.lock.sh": null,
       "~/.pad.png": null
