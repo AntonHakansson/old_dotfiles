@@ -35,11 +35,10 @@
 *.color7:       #c7ccd1
 *.color15:      #f3f4f5
 
-
 ! Custom
 URxvt.transparent:true
 URxvt.shading:5
 
-URxvt.font: xft:Inconsolata\ for\ Powerline:pixelsize=11
+URxvt.font: xft:Roboto Mono for Powerline:size=10
 
 URxvt.scrollBar: false
