@@ -28,7 +28,7 @@
       "~/.vimrc": {
       	"path": "dotvim/vimrc"
       },
-      "~.fonts/fontawesome-webfront.ttf": {
+      "~/.fonts/fontawesome-webfront.ttf": {
         "path": "fontawesome-webfont.ttf"
       },
       "~/.compton.conf": null,
