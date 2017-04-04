@@ -1,3 +1,6 @@
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -56,6 +59,9 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
