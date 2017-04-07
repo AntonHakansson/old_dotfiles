@@ -12,6 +12,12 @@ bindkey "^[[1;5D" backward-word
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
 
+echo "====================================================\n" | lolcat
+screenfetch | lolcat
+echo "\n====================================================\n\n\n" | lolcat
+cowfortune
+echo "\n\n"
+
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 

@@ -219,10 +219,10 @@ bindsym XF86AudioPrev exec playerctl previous
 
 #Auto start
 exec_always --no-startup-id feh --bg-scale ~/.wallpaper.jpg
-exec_always --no-startup-id pulseaudio 
-exec_always --no-startup-id xrdb ~/.Xresources
+exec --no-startup-id pulseaudio 
+exec --no-startup-id xrdb ~/.Xresources
 
-exec_always --no-startup-id  compton -f
+exec --no-startup-id  compton -f
 exec --no-startup-id  skypeforlinux
 exec --no-startup-id discord
 exec --no-startup-id spotify
