@@ -10,8 +10,8 @@ fi
 DOTBOT_DIR="dotbot"
 DOTBOT_BIN="bin/dotbot"
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-THEMEDIR="$BASEDIR/$1/"
-THEMECONFIG="$1/install.conf.json"
+THEMEDIR="$BASEDIR/themes/$1/"
+THEMECONFIG="themes/$1/install.conf.json"
 
 # global
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "global.conf.json" 
