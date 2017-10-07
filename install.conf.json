@@ -18,6 +18,9 @@
       "~/.config/i3/config": {
       	"path": "i3/config"
       },
+      "~/.config/polybar/config": {
+        "path": "polybar/config"
+      },
       "~/.i3blocks.conf": {
         "path": "i3/i3blocks.conf"
       },
