@@ -57,7 +57,7 @@
 
 !! Custom
 URxvt.transparent:true
-URxvt.shading:5
+URxvt.shading:20
 
 URxvt.font: xft:DejavuSansMono:pixelsize=12, \
             xft:Roboto Mono for Powerline:size=8, \
