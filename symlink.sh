@@ -17,4 +17,4 @@ THEMECONFIG="themes/$1/install.conf.json"
 "${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${BASEDIR}" -c "global.conf.json" 
 
 # Theme specific
-"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${THEMEDIR}" -c "${THEMECONFIG}"  
+"${BASEDIR}/${DOTBOT_DIR}/${DOTBOT_BIN}" -d "${THEMEDIR}" -c "${THEMECONFIG}"
