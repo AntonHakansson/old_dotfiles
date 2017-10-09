@@ -59,8 +59,8 @@
 URxvt.transparent:true
 URxvt.shading:20
 
-URxvt.font: xft:DejavuSansMono:pixelsize=12, \
-            xft:Roboto Mono for Powerline:size=8, \
+URxvt.font: xft:Roboto Mono for Powerline:size=9, \
+            xft:DejavuSansMono:pixelsize=12, \
             xft:FontAwesome:style=Regular
 URxvt.scrollBar: false
 
