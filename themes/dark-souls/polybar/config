@@ -9,10 +9,10 @@
 
 [colors]
 ;background = ${xrdb:color0:#222}
-background = #172A42
-background-alt = #8C8C8C
+background = #00172A42
+background-alt = #DBDBDB
 ;foreground = ${xrdb:color7:#222}
-foreground = #dfdfdf
+foreground = #444
 foreground-alt = #555
 primary = #FFFFFF
 secondary = #FFFFFF
@@ -22,8 +22,6 @@ alert = #bd2c40
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
 height = 36
-;offset-x = 1%
-;offset-y = 1%
 radius = 4.0
 fixed-center = true
 
@@ -33,14 +31,16 @@ foreground = ${colors.foreground}
 line-size = 3
 line-color = #f00
 
-border-size = 15
-border-top-size = 5
-border-bottom-size = 0
+border-size = 20
+border-top-size = 10
+border-bottom-size = 0 
 border-color = #00000000
 
+padding = 0
 padding-left = 0
 padding-right = 5
 
+module-margin = 0
 module-margin-left = 4
 module-margin-right = 4
 
@@ -50,22 +50,6 @@ font-1 = "FontAwesome:pixelsize=13;1"
 modules-left = i3
 modules-center = date
 modules-right = volume wlan filesystem memory battery
-
-tray-position = right
-tray-padding = 2
-tray-transparent = true
-;tray-background = #0063ff
-
-;wm-restack = bspwm
-;wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
 
 [module/xwindow]
 type = internal/xwindow
@@ -358,9 +342,3 @@ screenchange-reload = true
 ;compositing-background = screen
 ;compositing-foreground = source
 ;compositing-border = over
-
-[global/wm]
-margin-top = 5
-margin-bottom = 5
-
-; vim:ft=dosini
