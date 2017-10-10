@@ -180,7 +180,7 @@ gaps outer 10
 
 # window
 hide_edge_borders both
-new_window 1pixel
+new_window none
 
 # window colors
 #                       border              background         text                 indicator
@@ -203,11 +203,6 @@ bindsym XF86AudioPrev exec playerctl previous
 exec_always --no-startup-id feh --bg-scale ~/.wallpaper.jpg
 exec --no-startup-id pulseaudio 
 exec --no-startup-id xrdb ~/.Xresources
-exec --no-startup-id compton 
-exec --no-startup-id polybar example
-
+exec --no-startup-id polybar example -r
 exec --no-startup-id  compton -f
-exec --no-startup-id  skypeforlinux
-exec --no-startup-id discord
-exec --no-startup-id spotify
 
