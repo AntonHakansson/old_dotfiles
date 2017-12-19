@@ -168,8 +168,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # THEME
-set $bg-color 	         #2f343f
-set $inactive-bg-color   #2f343f
+set $bg-color 	         #0783ef
+set $inactive-bg-color   #333333
 set $text-color          #f3f4f5
 set $inactive-text-color #676E7D
 set $urgent-bg-color     #E53935
@@ -179,8 +179,9 @@ gaps inner 10
 gaps outer 10
 
 # window
-hide_edge_borders both
+#smart_borders enable
 new_window none
+for_window [class="^.*"] border pixel 1
 
 # window colors
 #                       border              background         text                 indicator
