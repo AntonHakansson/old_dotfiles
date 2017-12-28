@@ -1,5 +1,14 @@
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
+# Key bindings
+  # back/forward word
+  bindkey "^[[1;5C" forward-word
+  bindkey "^[[1;5D" backward-word
+# Functions
+	# Custom cd
+	c() {
+		cd $1;
+		ls;
+	}
+  alias cd="c"
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
