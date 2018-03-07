@@ -1,0 +1,19 @@
+#!/usr/bin/python3
+
+# Sets focus to the body of DOM
+# Useful for switching from controlling video player to scrolling the page
+
+from os import environ
+
+def qexec(cmd):
+    with open(environ['QUTE_FIFO'], 'w') as f:
+        f.write(cmd)
+        return
+
+if __name__ == '__main__':
+   qexec("jseval                                      \
+          window.focus();                             \
+          if (document.activeElement) {               \
+            document.activeElement.blur();            \
+          }                                           \
+         ")

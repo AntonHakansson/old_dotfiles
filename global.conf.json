@@ -18,6 +18,12 @@
       },
       "~/.fonts/fontawesome-webfront.ttf": {
         "path": "fontawesome-webfont.ttf"
+      },
+      "~/.config/qutebrowser/": {
+        "path": "qutebrowser/config.py"
+      },
+      "~/.local/share/qutebrowser/userscripts/": {
+        "path": "qutebrowser/userscripts/body_focus"
       }
     }
   },
