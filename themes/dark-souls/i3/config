@@ -43,10 +43,10 @@ bindsym $mod+d exec rofi -show run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+l focus left
+bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
-bindsym $mod+h focus right
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -181,7 +181,7 @@ gaps outer 10
 # window
 #smart_borders enable
 new_window none
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 5
 
 # window colors
 #                       border              background         text                 indicator
