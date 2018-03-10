@@ -19,10 +19,10 @@
       "~/.fonts/fontawesome-webfront.ttf": {
         "path": "fontawesome-webfont.ttf"
       },
-      "~/.config/qutebrowser/": {
+      "~/.config/qutebrowser/config.py": {
         "path": "qutebrowser/config.py"
       },
-      "~/.local/share/qutebrowser/userscripts/": {
+      "~/.local/share/qutebrowser/userscripts/body_focus": {
         "path": "qutebrowser/userscripts/body_focus"
       }
     }
