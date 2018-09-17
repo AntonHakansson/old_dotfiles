@@ -8,39 +8,57 @@
 ;=====================================================
 
 [colors]
-;background = ${xrdb:color0:#222}
-background = #00172A42
+background = #EF172A42
 background-alt = #DBDBDB
-;foreground = ${xrdb:color7:#222}
 foreground = #444
 foreground-alt = #555
 primary = #FFFFFF
 secondary = #FFFFFF
 alert = #bd2c40
 
-[bar/example]
-;monitor = ${env:MONITOR:HDMI-1}
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[bar/dummy]
+monitor = ${env:MONITOR:}
 width = 100%
-height = 36
-radius = 4.0
+height = 24
+radius = 0
+fixed-center = false
+background = transparent
+modules-left = blank
+
+[bar/example]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 28
+radius = 5
 fixed-center = true
+wm-restack = i3
+override-redirect = true
 
 background = ${colors.background}
-foreground = ${colors.foreground}
+;foreground = ${colors.foreground}
 
 line-size = 3
 line-color = #f00
 
 border-size = 20
-border-top-size = 10
-border-bottom-size = 0 
-border-color = #00000000
+border-top-size = 8
+border-bottom-size = 0
+border-color = transparent
 
-padding = 0
-padding-left = 0
-padding-right = 5
+padding-left = 2
+padding-right = 2
 
-module-margin = 0
 module-margin-left = 4
 module-margin-right = 4
 
@@ -50,6 +68,10 @@ font-1 = "FontAwesome:pixelsize=13;1"
 modules-left = i3
 modules-center = date
 modules-right = volume wlan filesystem memory battery
+
+[module/blank]
+type = internal/xwindow
+label = " "
 
 [module/xwindow]
 type = internal/xwindow
@@ -221,12 +243,13 @@ format = <label>
 format-prefix-foreground = ${colors.foreground}
 format-underline = ${colors.primary}
 
-label = %date%, %time%
+label = %date% - %time%
 
-date = "%a %B %d"
+date = "%d-%m-%Y"
 date-alt = "%d-%m-%Y"
 
-time = "%I:%M %p"
+;time = "%I:%M up"
+time  = "%H:%M"
 time-alt = "%H:%M"
 
 [module/volume]
@@ -336,9 +359,3 @@ menu-2-0-exec = sudo poweroff
 menu-2-1 = cancel
 menu-2-1-exec = menu-open-0
 
-[settings]
-screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
