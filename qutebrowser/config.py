@@ -638,7 +638,7 @@
 ## still be downloaded by clicking the download button in the pdf.js
 ## viewer.
 ## Type: Bool
-# c.content.pdfjs = False
+c.content.pdfjs = True
 
 ## Enable plugins in Web pages.
 ## Type: Bool
@@ -1318,6 +1318,7 @@ c.url.searchengines = {
     'yt': 'https://www.youtube.com/results?search_query={}',
     '4cat': 'http://boards.4chan.org/{}/catalog',
     'aw': 'https://wiki.archlinux.org/index.php?title=Special%3ASearch&search={}',
+    's': 'https://www.synonymer.se/sv-syn/{}',
 }
 
 ## Page(s) to open at the start.
