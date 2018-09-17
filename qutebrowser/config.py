@@ -1314,11 +1314,12 @@ c.downloads.remove_finished = 3000
 ## `:open google qutebrowser`.
 ## Type: Dict
 c.url.searchengines = {
-    'DEFAULT': 'https://duckduckgo.com/?q={}',
-    'yt': 'https://www.youtube.com/results?search_query={}',
-    '4cat': 'http://boards.4chan.org/{}/catalog',
-    'aw': 'https://wiki.archlinux.org/index.php?title=Special%3ASearch&search={}',
-    's': 'https://www.synonymer.se/sv-syn/{}',
+  'DEFAULT':  'https://duckduckgo.com/?q={}',
+  'yt':       'https://www.youtube.com/results?search_query={}',
+  '4cat':     'http://boards.4chan.org/{}/catalog',
+  'aw':       'https://wiki.archlinux.org/index.php?title=Special%3ASearch&search={}',
+  's':        'https://www.synonymer.se/sv-syn/{}',
+  't':        'https://translate.google.com/#en/sv/{}',
 }
 
 ## Page(s) to open at the start.
@@ -1400,7 +1401,8 @@ c.url.start_pages = 'https://www.youtube.com'
 # config.bind('<Ctrl-T>', 'open -t')
 # config.bind('<Ctrl-Tab>', 'tab-focus last')
 # config.bind('<Ctrl-U>', 'scroll-page 0 -0.5')
-# config.bind('<Ctrl-V>', 'enter-mode passthrough')
+config.bind('<Ctrl-Shift-V>', 'enter-mode passthrough')
+config.unbind('<Ctrl-V>')
 # config.bind('<Ctrl-W>', 'tab-close')
 # config.bind('<Ctrl-X>', 'navigate decrement')
 # config.bind('<Ctrl-^>', 'tab-focus last')
@@ -1580,7 +1582,8 @@ c.url.start_pages = 'https://www.youtube.com'
 # config.bind('<Shift-Ins>', 'insert-text {primary}', mode='insert')
 
 ## Bindings for passthrough mode
-# config.bind('<Ctrl-V>', 'leave-mode', mode='passthrough')
+config.bind('<Ctrl-Shift-V>', 'leave-mode', mode='passthrough')
+config.unbind('<Ctrl-V>', mode='passthrough')
 
 ## Bindings for prompt mode
 # config.bind('<Alt-B>', 'rl-backward-word', mode='prompt')
