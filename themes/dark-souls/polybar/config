@@ -116,9 +116,8 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 ramp-headphones-0 = 
-label-volume-foreground = ${root.foreground}
-
-format-muted-foreground = ${colors.foreground-alt}
+; label-volume-foreground = ${root.foreground}
+; format-muted-foreground = ${colors.foreground}
 label-muted =  muted
 
 bar-volume-width = 10
