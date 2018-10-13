@@ -695,7 +695,7 @@ c.content.pdfjs = True
 ## Directory to save downloads to. If unset, a sensible OS-specific
 ## default is used.
 ## Type: Directory
-# c.downloads.location.directory = None
+c.downloads.location.directory = "~/Downloads/"
 
 ## Prompt the user for the download location. If set to false,
 ## `downloads.location.directory` will be used.
