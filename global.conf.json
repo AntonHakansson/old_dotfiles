@@ -13,6 +13,9 @@
   },
   {
     "link": {
+      "~/.spacemacs": {
+        "path": ".spacemacs"
+      },
       "~/.vimrc": {
         "path": "dotvim/vimrc"
       },
