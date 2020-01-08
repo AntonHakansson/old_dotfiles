@@ -32,7 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(javascript
+     html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -47,6 +48,7 @@ This function should only modify configuration layer settings."
      ;; markdown
      multiple-cursors
      org
+     bibtex
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -69,6 +71,9 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(
+     prettier-js
+     academic-phrases ; list of common academic phrases
+     rjsx-mode
      google-c-style
      flymake-google-cpplint
      )
@@ -214,7 +219,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font or prioritized list of fonts.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 12.0
+                               :size 10.0
                                :weight normal
                                :width normal)
 
@@ -480,67 +485,161 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (add-hook 'c-mode-common-hook 'google-set-c-style)
-  (add-hook 'c++-mode-common-hook 'google-set-c-style)
-  (add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
-  (add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
+  (setq org-catch-invisible-edits 'smart)
+
+  (setq org-blank-before-new-entry '((heading . t) (plain-list-item . nil)))
+  (setq org-fontify-done-headline t)
+  (setq org-fontify-emphasized-text t)
+  (setq org-fontify-done-headline t)
+  (setq org-fontify-quote-and-verse-blocks t)
+  (setq org-hide-emphasis-markers nil)
+  (setq org-hide-macro-markers nil)
+  (setq org-image-actual-width '(800))
+  (setq org-highlight-latex-and-related '(latex))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.55))
+
+  (setq org-confirm-babel-evaluate nil)
+
+  ;; (add-hook 'c-mode-common-hook 'google-set-c-style)
+  ;; (add-hook 'c++-mode-common-hook 'google-set-c-style)
+  ;; (add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
+  ;; (add-hook 'c++-mode-hook 'flymake-google-cpplint-load)
+  (setq org-ref-open-pdf-function
+        (lambda (fpath)
+          (start-process "zathura" "*helm-bibtex-zathura*" "/usr/bin/zathura" fpath)))
+
+  (setq org-latex-pdf-process
+        '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f  %f"))
+
+  (defun org-strip-quotes (string)
+    "Strip double quotes from around STRING, if applicable.
+If STRING is nil, return nil."
+    (org-unbracket-string "\"" "\"" string))
 
   ;; Org Notebook
-  (defun org-notebook-get-png-link-at-point ()
+  (define-key org-mode-map (kbd "M-o") 'org-notebook-edit-xournal)
+  (define-key org-mode-map (kbd "M-e") 'org-notebook-generate-xournal-image)
+
+  (defun org-notebook-get-png-link-at-point (shouldThrowError)
+    "Returns filepath of org link at cursor"
     (setq linestr (thing-at-point 'line))
     (setq start (string-match "\\[\\[" linestr))
     (setq end (string-match "\\]\\]" linestr))
-    (setq png (string-match ".png" linestr))
-    (if start nil (error "No link found"))
-    (if end nil   (error "No link found"))
-    (if png nil   (error "Link is not an image"))
+    (if shouldThrowError (if start nil (error "No link found")) nil)
+    (if shouldThrowError (if end nil   (error "No link found")) nil)
+    (if shouldThrowError (if (string-match ".png" linestr) nil   (error "Link is not an image")) nil)
 
-    (setq image-path (substring linestr (+ start 2) end))
-    image-path
+    (if (and linestr start end) (substring linestr (+ start 2) end) nil)
     )
 
+  (defun org-notebook-gen-filename-at-point ()
+    "Returns a list of valid file paths corresponding to current context(Header & Date)."
 
-  (defun org-notebook-insert-screenshot ()
-    (interactive)
     (setq result-dir "./fig/")
     (unless (file-directory-p result-dir) (make-directory result-dir))
-    (setq image-name (format-time-string "%Y-%m-%d_%H%M%S"))
-    (setq image-path (format "%s%s.png" result-dir image-name))
-    (insert "[[" image-path "]]")
-    (start-process "org-notebook-screenshot" nil "deepin-screenshot" "-s" image-path)
+
+    (setq date-string (format-time-string "%Y-%m-%d_%H%M%S"))
+
+    (setq heading (nth 4 (org-heading-components)))
+
+    (setq heading (replace-regexp-in-string "\\[.*\\]" "" heading))
+
+    ;; First filter out weird symbols
+    (setq heading (replace-regexp-in-string "[/;:'\"\(\)]+" "" heading))
+    (setq heading (string-trim heading))
+    ;; filter out swedish characters åäö -> aao
+    (setq heading(replace-regexp-in-string "[åÅäÄ]+" "a" heading))
+    (setq heading(replace-regexp-in-string "[öÓ]+" "o" heading))
+    ;; whitespace and . to underscores
+    (setq heading (replace-regexp-in-string "[ .]+" "_" heading))
+
+    (setq filename (format "%s-%s" heading date-string))
+    (setq filename (read-minibuffer "Filename: " filename))
+
+    (setq result-dir "./fig/")
+    (setq image-path (format "%s%s.png" result-dir filename))
+    (setq xournal-path (format "%s%s.xopp" result-dir filename))
+
+    (list image-path xournal-path)
     )
+
 
   (defun org-notebook-create-xournal ()
     "Insert an image and open the drawing program"
     (interactive)
-    (setq result-dir "./fig/")
-    (unless (file-directory-p result-dir) (make-directory result-dir))
-    (setq date-string (format-time-string "%Y-%m-%d_%H%M%S"))
-    (setq image-path (format "%s%s.png" result-dir date-string))
-    (setq xournal-path (format "%s%s.xopp" result-dir date-string))
 
-    (insert "[[" image-path "]]")
+    (setq notebookfile (org-notebook-gen-filename-at-point))
+    (setq image-path (car notebookfile))
+    (setq xournal-path (nth 1 notebookfile))
+
+    (evil-open-below 1)
+    (insert "[[" image-path "]]\n")
+    (evil-normal-state)
+
     (start-process "org-notebook-copy-template" nil "cp"  "./template.xopp" xournal-path)
     (start-process "org-notebook-drawing" nil "xournalpp" xournal-path)
     )
 
   (defun org-notebook-edit-xournal ()
     (interactive)
-    (setq image-path (org-notebook-get-png-link-at-point))
-    (setq xournal-path (replace-regexp-in-string "\.png" ".xopp" image-path))
-    (if (file-readable-p xournal-path) nil (error "No matching xournal file found"))
+    (setq image-path (org-notebook-get-png-link-at-point nil))
+    (if (not image-path)
+        (if (y-or-n-p "No matching xournal file, create one?")
+          (org-notebook-create-xournal)
+          (error "Nothing more to do...")
+          )
+         nil
+      )
 
-    (start-process "org-notebook-drawing" nil "xournalpp" xournal-path)
+    (setq xournal-path (replace-regexp-in-string "\.png" ".xopp" image-path))
+    (if (file-readable-p xournal-path) (start-process "org-notebook-drawing" nil "xournalpp" xournal-path) (error "No matching xournal file found"))
     )
 
   (defun org-notebook-generate-xournal-image ()
     (interactive)
-    (setq image-path (org-notebook-get-png-link-at-point))
+    (setq image-path (org-notebook-get-png-link-at-point t))
     (setq xournal-path (replace-regexp-in-string "\.png" ".xopp" image-path))
     (if (file-readable-p xournal-path) nil (error "No matching xournal file found"))
 
-    (shell-command (format "xournalpp %s %s %s" xournal-path "-i" image-path))
-    (shell-command (format "convert %s -trim -bordercolor '#333333' -border 20 +repage %s" image-path image-path))
+    (setq xournal_cmd (format "xournalpp %s %s %s" xournal-path "-i" image-path))
+    (print (format "Generating image file: %s" xournal_cmd))
+    (shell-command xournal_cmd)
+
+
+    (setq convert_cmd (format "convert %s -trim -bordercolor '#292b2e' -border 20 +repage %s" image-path image-path))
+    (print (format "Auto cropping image: %s" convert_cmd))
+    (shell-command convert_cmd)
+
+    (org-redisplay-inline-images)
+    )
+
+  (defun org-notebook-insert-screenshot ()
+    (interactive)
+
+    (setq notebookfile (org-notebook-gen-filename-at-point))
+    (setq image-path (car notebookfile))
+
+    (evil-open-below 1)
+    (insert "[[" image-path "]]\n")
+    (evil-normal-state)
+
+    (start-process "org-notebook-screenshot" nil "deepin-screenshot" "-s" image-path)
+    )
+
+  (defun org-notebook-rename-xournal-image ()
+    (interactive)
+    (setq image-path (org-notebook-get-png-link-at-point t))
+    (setq xournal-path (replace-regexp-in-string "\.png" ".xopp" image-path))
+
+    (setq filename-path (replace-regexp-in-string "\.png" "" image-path))
+
+    (if (file-readable-p image-path) nil (error "No image file found"))
+    (if (file-readable-p xournal-path) nil (error "No matching xournal file found"))
+
+    (setq new-filename-path (read-minibuffer "New Filename: " filename-path))
+
+    (shell-command (format "mv %s %s" image-path (format "%s.png" new-filename-path)))
+    (shell-command (format "mv %s %s" xournal-path (format "%s.xopp" new-filename-path)))
     )
   )
 
@@ -556,9 +655,10 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
    (quote
-    (yasnippet-snippets unfill treemacs-magit smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain mwim magit-svn magit-gitflow magit-popup htmlize helm-rtags helm-org-rifle helm-org helm-gitignore helm-git-grep helm-company helm-c-yasnippet google-c-style gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flyspell-correct-helm flyspell-correct flymake-google-cpplint flymake-easy flycheck-ycmd flycheck-rtags flycheck-pos-tip pos-tip evil-org evil-magit magit transient git-commit with-editor disaster diff-hl cpp-auto-include company-ycmd ycmd request-deferred deferred company-statistics company-rtags rtags company-c-headers company clang-format browse-at-remote auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler writeroom-mode visual-fill-column winum volatile-highlights vi-tilde-fringe uuidgen treemacs-projectile treemacs-evil treemacs ht pfuture toc-org symon symbol-overlay string-inflection spaceline-all-the-icons spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode password-generator paradox spinner overseer org-bullets open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-xref helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile projectile helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck-package package-lint flycheck pkg-info epl let-alist flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump doom-modeline shrink-path all-the-icons memoize f dash s devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup which-key use-package pcre2el org-plus-contrib hydra lv hybrid-mode font-lock+ evil goto-chg undo-tree dotenv-mode diminish bind-map bind-key async))))
+    (org-ref pdf-tools key-chord helm-bibtex biblio parsebib biblio-core tablist academic-phrases rjsx-mode tern nodejs-repl livid-mode skewer-mode js2-refactor multiple-cursors js2-mode js-doc import-js grizzl helm-gtags ggtags dap-mode bui tree-mode lsp-mode markdown-mode dash-functional counsel-gtags counsel swiper ivy web-mode web-beautify tagedit slim-mode scss-mode pug-mode prettier-js simple-httpd helm-css-scss haml-mode emmet-mode web-completion-data add-node-modules-path yasnippet-snippets unfill treemacs-magit smeargle orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download org-cliplink org-brain mwim magit-svn magit-gitflow magit-popup htmlize helm-rtags helm-org-rifle helm-org helm-gitignore helm-git-grep helm-company helm-c-yasnippet google-c-style gnuplot gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter fuzzy flyspell-correct-helm flyspell-correct flymake-google-cpplint flymake-easy flycheck-ycmd flycheck-rtags flycheck-pos-tip pos-tip evil-org evil-magit magit transient git-commit with-editor disaster diff-hl cpp-auto-include company-ycmd ycmd request-deferred deferred company-statistics company-rtags rtags company-c-headers company clang-format browse-at-remote auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler writeroom-mode visual-fill-column winum volatile-highlights vi-tilde-fringe uuidgen treemacs-projectile treemacs-evil treemacs ht pfuture toc-org symon symbol-overlay string-inflection spaceline-all-the-icons spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode password-generator paradox spinner overseer org-bullets open-junk-file nameless move-text macrostep lorem-ipsum link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-xref helm-themes helm-swoop helm-purpose window-purpose imenu-list helm-projectile projectile helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio flycheck-package package-lint flycheck pkg-info epl let-alist flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state iedit evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens smartparens paredit evil-args evil-anzu anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump doom-modeline shrink-path all-the-icons memoize f dash s devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile packed aggressive-indent ace-window ace-link ace-jump-helm-line helm avy helm-core popup which-key use-package pcre2el org-plus-contrib hydra lv hybrid-mode font-lock+ evil goto-chg undo-tree dotenv-mode diminish bind-map bind-key async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
